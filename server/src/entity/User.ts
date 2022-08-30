@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
 import { EncryptionTransformer } from "typeorm-encrypted";
+import { Exam } from "./Exam";
 
 
 @Entity()
@@ -22,9 +23,16 @@ export class User {
   })
   password?: string;
 
+  @Column({ name: 'type', insert: false, update: false })
+  type: string;
+
   @Column()
   firstName: string;
 
   @Column()
   lastName: string;
+
+  @ManyToMany(() => Exam, e => e.students)
+
+  exams: Exam[];
 }

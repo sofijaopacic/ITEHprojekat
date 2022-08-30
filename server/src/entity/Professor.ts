@@ -4,6 +4,6 @@ import { User } from "./User";
 
 
 @ChildEntity(UserConstants.PROFESSOR)
-export class Proferssor extends User {
+export class Professor extends User {
 
 }
