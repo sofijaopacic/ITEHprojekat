@@ -1,7 +1,6 @@
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Assignement } from "./Assignement";
-import { Professor } from "./Professor";
-import { Student } from "./Student";
+import { Professor, Student } from "./User";
 
 @Entity()
 export class Exam {

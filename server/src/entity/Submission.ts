@@ -1,6 +1,5 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Professor } from "./Professor";
-import { Student } from "./Student";
+import { Professor, Student } from "./User";
 
 export type SubmissionStatus = 'pending' | 'passed' | 'failed';
 

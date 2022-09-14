@@ -1,4 +1,5 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
+import { UserConstants } from "../constants";
+import { ChildEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
 import { EncryptionTransformer } from "typeorm-encrypted";
 import { Exam } from "./Exam";
 
@@ -35,4 +36,17 @@ export class User {
   @ManyToMany(() => Exam, e => e.students)
 
   exams: Exam[];
+}
+
+@ChildEntity(UserConstants.PROFESSOR)
+export class Professor extends User {
+
+}
+
+
+@ChildEntity(UserConstants.STUDENT)
+export class Student extends User {
+
+  @Column()
+  index: string;
 }

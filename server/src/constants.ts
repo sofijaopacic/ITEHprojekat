@@ -1,6 +1,4 @@
-
-
 export const UserConstants = {
-  STUDENT: 'STUDENT',
-  PROFESSOR: 'PROFESSOR'
+  PROFESSOR: 'PROFESSOR',
+  STUDENT: 'STUDENT'
 }
