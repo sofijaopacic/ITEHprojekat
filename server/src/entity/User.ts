@@ -33,8 +33,7 @@ export class User {
   @Column()
   lastName: string;
 
-  @ManyToMany(() => Exam, e => e.students)
-
+  @ManyToMany(() => Exam, e => e.users)
   exams: Exam[];
 }
 

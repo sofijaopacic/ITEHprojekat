@@ -20,5 +20,5 @@ export class Assignement {
   description: string;
 
   @ManyToOne(() => Exam, e => e.assignements, { onDelete: 'CASCADE' })
-  exam: Exam[];
+  exam: Exam;
 }

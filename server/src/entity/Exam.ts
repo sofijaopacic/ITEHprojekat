@@ -1,6 +1,6 @@
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Assignement } from "./Assignement";
-import { Professor, Student } from "./User";
+import { Professor, Student, User } from "./User";
 
 @Entity()
 export class Exam {
@@ -22,11 +22,11 @@ export class Exam {
 
   @ManyToMany(() => Student, s => s.exams, { cascade: true })
   @JoinTable({
-    name: 'student_exams',
-    inverseJoinColumn: { name: 'student_id' },
+    name: 'user_exams',
+    inverseJoinColumn: { name: 'user_id' },
     joinColumn: { name: 'exam_id' }
   })
-  students: Student[];
+  users: User[];
 
 
   @OneToMany(() => Assignement, a => a.exam, { cascade: true })

@@ -4,9 +4,12 @@ import * as cors from 'cors';
 import authRouter from './routes/authRoutes'
 import * as jwt from 'jsonwebtoken'
 import { User } from "./entity/User";
+import { JWT_SECRET } from "./constants";
+import commonRouter from './routes/commonRoutes'
+import studentRouter from './routes/studentRoutes'
+import professorRouter from './routes/professorRoutes'
 AppDataSource.initialize().then(async () => {
 
-    // create express app
     const app = express()
     app.use(express.json())
     app.use(cors());
@@ -24,7 +27,7 @@ AppDataSource.initialize().then(async () => {
         }
         const token = splited[1];
         try {
-            const userId = jwt.verify(token, process.env.JWT_SECRET) as { id: number };
+            const userId = jwt.verify(token, JWT_SECRET) as { id: number };
             const user = await AppDataSource.getRepository(User).findOne({
                 where: { id: userId.id }
             });
@@ -38,6 +41,12 @@ AppDataSource.initialize().then(async () => {
             res.status(401).json({ error: 'Unauthenticated' })
         }
     })
-    app.listen(8080)
+
+    app.use('/user', commonRouter);
+    app.use('/student', studentRouter);
+    app.use('/professor', professorRouter);
+    app.listen(8080, () => {
+        console.log('server started')
+    })
 
 }).catch(error => console.log(error))

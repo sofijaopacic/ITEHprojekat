@@ -2,6 +2,7 @@ import { Router } from "express";
 import { AppDataSource } from "../data-source";
 import { User } from "../entity/User";
 import * as jwt from 'jsonwebtoken'
+import { JWT_SECRET, UserConstants } from "../constants";
 
 const router = Router();
 
@@ -17,7 +18,7 @@ router.post('/login', async (req, res) => {
     res.status(400).json({ error: 'Bad credentials' });
     return;
   }
-  const token = jwt.sign({ id: user.id }, process.env.JWT, { expiresIn: '2h' });
+  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '2h' });
   res.json({
     user,
     token
@@ -49,9 +50,9 @@ router.post('/register', async (req, res) => {
     firstName: data.firstName,
     lastName: data.lastName,
     password: data.password,
-    type: 'patient'
+    type: UserConstants.STUDENT
   })
-  const token = jwt.sign({ id: createdUser.id }, process.env.JWT, { expiresIn: '2h' });
+  const token = jwt.sign({ id: createdUser.id }, JWT_SECRET, { expiresIn: '2h' });
   res.json({
     user: createdUser,
     token
