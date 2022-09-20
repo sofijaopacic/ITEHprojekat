@@ -2,6 +2,7 @@ import { Router } from "express";
 import { UserConstants } from "../constants";
 import { AppDataSource } from "../data-source";
 import { Assignement } from "../entity/Assignement";
+import { Exam } from "../entity/Exam";
 import { Submission } from "../entity/Submission";
 import { Student, User } from "../entity/User";
 
@@ -22,9 +23,12 @@ router.get('/assignement', async (req, res) => {
   const user = (req as any).user as Student;
 
   const assignements = await AppDataSource.getRepository(Assignement).find({
+    relations: {
+      exam: true
+    },
     where: {
       exam: {
-        users: {
+        students: {
           id: user.id
         }
       }
@@ -32,7 +36,9 @@ router.get('/assignement', async (req, res) => {
   })
   const submissions = await AppDataSource.getRepository(Submission).find({
     where: {
-      student: user,
+      student: {
+        id: user.id
+      },
     }
   })
   res.json(assignements.map(element => {
@@ -59,7 +65,9 @@ router.post('/submission', async (req, res) => {
 
   const submission = await AppDataSource.getRepository(Submission).findOne({
     where: {
-      student: user,
+      student: {
+        id: user.id
+      },
       assignementId: assignement.id
     }
   })
@@ -70,7 +78,6 @@ router.post('/submission', async (req, res) => {
   const s1 = await AppDataSource.getRepository(Submission).save({
     assignement: assignement,
     assignementId: assignement.id,
-    fileName: req.body.fileName,
     fileUrl: req.body.fileUrl,
     points: 0,
     status: 'pending',
@@ -95,6 +102,23 @@ router.get('/submission', async (req, res) => {
       }
     });
   res.json(submissions);
+})
+
+router.get('/exam', async (req, res) => {
+  const user = (req as any).user as User;
+  const exams = await AppDataSource.getRepository(Exam)
+    .find({
+      relations: {
+        assignements: true,
+        professor: true
+      },
+      where: {
+        students: {
+          id: user.id
+        }
+      }
+    });
+  res.json(exams);
 })
 
 export default router;

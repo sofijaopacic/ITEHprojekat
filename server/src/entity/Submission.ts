@@ -25,8 +25,6 @@ export class Submission {
   })
   status: SubmissionStatus
 
-  @Column()
-  fileName: string;
 
   @Column({ type: 'int' })
   points: number;

@@ -43,6 +43,7 @@ AppDataSource.initialize().then(async () => {
     })
 
     app.use('/user', commonRouter);
+    app.use('/files', express.static('files'))
     app.use('/student', studentRouter);
     app.use('/professor', professorRouter);
     app.listen(8080, () => {

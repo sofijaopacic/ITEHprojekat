@@ -33,8 +33,6 @@ export class User {
   @Column()
   lastName: string;
 
-  @ManyToMany(() => Exam, e => e.users)
-  exams: Exam[];
 }
 
 @ChildEntity(UserConstants.PROFESSOR)
@@ -48,4 +46,7 @@ export class Student extends User {
 
   @Column()
   index: string;
+
+  @ManyToMany(() => Exam, e => e.students)
+  exams: Exam[];
 }

@@ -16,6 +16,9 @@ export const uplaodMiddleware = multer({
 
 const router = Router();
 
+router.get('/', async (req, res) => {
+  res.json((req as any).user);
+})
 
 router.post("/upload", uplaodMiddleware, (req, res) => {
   const user = (req as any).user as User;
@@ -27,33 +30,21 @@ router.post("/upload", uplaodMiddleware, (req, res) => {
   }
   const file = req.files['file'][0];
   const tempPath = file.path;
-  const imgName = 'img/' + user.id + '/' + file.originalname
+  const imgName = 'files/' + file.originalname
   const targetPath = path.resolve(imgName);
+  console.log(targetPath);
   fs.rename(tempPath, targetPath, (err) => {
     if (!err) {
       res.json({
-        fileUrl: 'https://localhost:8000/' + imgName
+        fileUrl: 'http://localhost:8080/' + imgName
       })
     } else {
+      console.log(err);
       res.status(500).json({ error: "Server error" })
     }
   })
 })
 
-router.get('/exam', async (req, res) => {
-  const user = (req as any).user as User;
-  const exams = await AppDataSource.getRepository(Exam)
-    .find({
-      relations: {
-        assignements: true
-      },
-      where: {
-        users: {
-          id: user.id
-        }
-      }
-    });
-  res.json(exams);
-})
+
 
 export default router;

@@ -20,13 +20,13 @@ export class Exam {
   @ManyToOne(() => Professor)
   professor: Professor;
 
-  @ManyToMany(() => Student, s => s.exams, { cascade: true })
+  @ManyToMany(() => Student, s => s.exams, { cascade: ['insert', 'update', 'remove'] })
   @JoinTable({
     name: 'user_exams',
     inverseJoinColumn: { name: 'user_id' },
     joinColumn: { name: 'exam_id' }
   })
-  users: User[];
+  students: Student[];
 
 
   @OneToMany(() => Assignement, a => a.exam, { cascade: true })

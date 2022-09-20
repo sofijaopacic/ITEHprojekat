@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { AppDataSource } from "../data-source";
-import { User } from "../entity/User";
+import { Student, User } from "../entity/User";
 import * as jwt from 'jsonwebtoken'
 import { JWT_SECRET, UserConstants } from "../constants";
 
@@ -18,7 +18,7 @@ router.post('/login', async (req, res) => {
     res.status(400).json({ error: 'Bad credentials' });
     return;
   }
-  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '2h' });
+  const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '2h' });
   res.json({
     user,
     token
@@ -44,7 +44,7 @@ router.post('/register', async (req, res) => {
     res.status(400).json({ error: 'User already exists' });
     return;
   }
-  const createdUser = await AppDataSource.getRepository(User).save({
+  const createdUser = await AppDataSource.getRepository(Student).save({
     index: data.index,
     email: data.email,
     firstName: data.firstName,
